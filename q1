@@ -1,0 +1,95 @@
+#include <iostream>
+using namespace std;
+
+class Queue {
+    int* container;
+    int capacity;
+    int head, tail;
+
+public:
+    Queue(int maxSize) {
+        capacity = maxSize;
+        container = new int[capacity];
+        head = tail = 0;
+    }
+
+    bool isEmpty() {
+        return (head == tail);
+    }
+
+    bool isFull() {
+        return (tail == capacity);
+    }
+
+    void enqueue(int value) {
+        if (isFull()) {
+            cout << "queue full" << endl;
+            return;
+        }
+        container[tail++] = value;
+    }
+
+    void dequeue() {
+        if (isEmpty()) {
+            cout << "queue empty" << endl;
+            return;
+        }
+        cout << "removed: " << container[head] << endl;
+        head++;
+    }
+
+    void display() {
+        if (isEmpty()) {
+            cout << "queue empty" << endl;
+            return;
+        }
+        cout << "queue contents: ";
+        for (int i = head; i < tail; i++)
+            cout << container[i] << " ";
+        cout << endl;
+    }
+
+    void peek() {
+        if (isEmpty()) 
+            cout << "queue empty" << endl;
+        else 
+            cout << "front element: " << container[head] << endl;
+    }
+};
+
+int main() {
+    int maxSize, option, data;
+    cout << "Enter queue capacity: ";
+    cin >> maxSize;
+    Queue q(maxSize);
+
+    do {
+        cout << "\n1.Enqueue  2.Dequeue  3.Display  4.Peek  5.Exit\n";
+        cout << "Select option: ";
+        cin >> option;
+
+        switch (option) {
+            case 1:
+                cout << "Enter value: ";
+                cin >> data;
+                q.enqueue(data);
+                break;
+            case 2:
+                q.dequeue();
+                break;
+            case 3:
+                q.display();
+                break;
+            case 4:
+                q.peek();
+                break;
+            case 5:
+                cout << "terminating..." << endl;
+                break;
+            default:
+                cout << "invalid option" << endl;
+        }
+    } while (option != 5);
+
+    return 0;
+}
