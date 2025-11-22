@@ -1,0 +1,30 @@
+#include <iostream>
+#include <queue>
+#include <unordered_map>
+using namespace std;
+
+void findFirstUnique(string input) {
+    unordered_map<char, int> count;
+    queue<char> q;
+
+    for (char c : input) {
+        count[c]++;
+        q.push(c);
+
+        while (!q.empty() && count[q.front()] > 1) {
+            q.pop();
+        }
+
+        if (q.empty()) cout << "-1 ";
+        else cout << q.front() << " ";
+    }
+}
+
+int main() {
+    string input;
+    cout << "enter string: ";
+    cin >> input;
+
+    findFirstUnique(input);
+    return 0;
+}
