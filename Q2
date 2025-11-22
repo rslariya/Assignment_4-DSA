@@ -1,0 +1,110 @@
+#include <iostream>
+using namespace std;
+
+class CircularQueue {
+    int* buffer;
+    int capacity;
+    int start, end;
+
+public:
+    CircularQueue(int s) {
+        capacity = s;
+        buffer = new int[capacity];
+        start = end = -1;
+    }
+
+    bool isEmpty() {
+        return (start == -1);
+    }
+
+    bool isFull() {
+        return ((end + 1) % capacity == start);
+    }
+
+    void enqueue(int item) {
+        if (isFull()) {
+            cout << "queue has reached its maximum capacity" << endl;
+            return;
+        }
+        if (isEmpty()) {
+            start = end = 0;
+        } else {
+            end = (end + 1) % capacity;
+        }
+        buffer[end] = item;
+    }
+
+    void dequeue() {
+        if (isEmpty()) {
+            cout << "no elements in the queue" << endl;
+            return;
+        }
+        cout << "removed element: " << buffer[start] << endl;
+        if (start == end) {
+            start = end = -1;
+        } else {
+            start = (start + 1) % capacity;
+        }
+    }
+
+    void display() {
+        if (isEmpty()) {
+            cout << "the queue contains no elements!" << endl;
+            return;
+        }
+        cout << "current queue contents: ";
+        int current = start;
+        while (true) {
+            cout << buffer[current] << " ";
+            if (current == end) break;
+            current = (current + 1) % capacity;
+        }
+        cout << endl;
+    }
+
+    void peek() {
+        if (isEmpty()) {
+            cout << "the queue is currently empty" << endl;
+        } else {
+            cout << "element at front: " << buffer[start] << endl;
+        }
+    }
+};
+
+int main() {
+    int maxSize, option, element;
+    cout << "specify the maximum queue capacity: ";
+    cin >> maxSize;
+    CircularQueue cq(maxSize);
+
+    do {
+        cout << "\noperations menu:\n";
+        cout << "1.add element  2.remove element  3.show queue  4.view front  5.quit\n";
+        cout << "select operation: ";
+        cin >> option;
+
+        switch (option) {
+            case 1:
+                cout << "enter element to add: ";
+                cin >> element;
+                cq.enqueue(element);
+                break;
+            case 2:
+                cq.dequeue();
+                break;
+            case 3:
+                cq.display();
+                break;
+            case 4:
+                cq.peek();
+                break;
+            case 5:
+                cout << "program terminating..." << endl;
+                break;
+            default:
+                cout << "invalid selection" << endl;
+        }
+    } while (option != 5);
+
+    return 0;
+}
